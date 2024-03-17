@@ -1,95 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:hkorn_new_dev_vijay/model/search_model.dart';
+import 'package:hkorn_new_dev_vijay/ui/shared/base_appbar.dart';
+import 'package:hkorn_new_dev_vijay/ui/shared/widgets/spinner.dart';
 
 class PostRedirectScreen extends StatefulWidget {
-  final String postUrl;
-  const PostRedirectScreen({super.key, required this.postUrl});
+  final SearchResultModel result;
+  const PostRedirectScreen({super.key, required this.result});
 
   @override
   State<PostRedirectScreen> createState() => _PostRedirectScreenState();
 }
 
 class _PostRedirectScreenState extends State<PostRedirectScreen> {
-  WebViewController _controller = WebViewController();
-
-  int loadingPercentage = 0;
-
-  initializeWebWiew(BuildContext context) async {
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            if (mounted) {
-              setState(() {
-                loadingPercentage = progress;
-              });
-            }
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) async {
-            if (mounted) {
-              setState(() {
-                loadingPercentage = 100;
-              });
-            }
-            // if (checkoutUrl != url) {
-            //   changePayementStatus();
-            // }
-          },
-          onWebResourceError: (WebResourceError error) {
-            // showPaymentErrorInfo();
-          },
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-      ..addJavaScriptChannel(
-        'Terms and conditions',
-        onMessageReceived: (JavaScriptMessage message) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message.message)),
-          );
-        },
-      )
-      ..loadRequest(Uri.parse(widget.postUrl));
-    //
-  }
-
+  bool isLoading = true;
   @override
   void initState() {
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
     super.initState();
-
-    initializeWebWiew(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          "Terms and conditions",
-          style: TextStyle(color: Colors.white),
+        appBar: BaseAppbar(
+          title: widget.result.post_title,
+          context: context,
         ),
-      ),
-      body: loadingPercentage < 100
-          ? Column(
-              children: [
-                if (loadingPercentage < 100) const CircularProgressIndicator(),
-              ],
-            )
-          : Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: WebViewWidget(
-                controller: _controller,
-              ),
-            ),
-    );
+        body: isLoading
+            ? loadingSpinnerWidget
+            : SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  child: HtmlWidget(
+                    widget.result.post_content,
+                  ),
+                ),
+              ));
   }
 }

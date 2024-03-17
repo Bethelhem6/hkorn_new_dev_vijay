@@ -115,15 +115,15 @@ class SearchView extends StatelessWidget {
                                       // Navigate to the determined route
                                       if (route != null) {
                                         Navigator.pushNamed(context, route);
-                                        // } else {
-                                        //   Navigator.push(
-                                        //       context,
-                                        //       MaterialPageRoute(
-                                        //           builder: (context) =>
-                                        //               PostRedirectScreen(
-                                        //                 postUrl: model
-                                        //                     .result![index].url,
-                                        //               )));
+                                      } else {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PostRedirectScreen(
+                                                      result:
+                                                          model.result![index],
+                                                    )));
                                       }
                                     },
                                     child: Column(
@@ -181,9 +181,15 @@ String? _getRouteForItem(String postTitle) {
       return Routes.signUpView;
     case 'Sign In':
       return Routes.signInView;
+    case 'Login':
+      return Routes.signInView;
     case 'Home Page':
       return Routes.homeView;
     case 'ForgetPassword':
+      return Routes.forgetPasswordView;
+    case 'UserPassword':
+      return Routes.forgetPasswordView;
+    case 'Password Reset':
       return Routes.forgetPasswordView;
     case 'Events':
       return Routes.eventView;

@@ -53,10 +53,9 @@ dependencies:
   streaming_shared_preferences: null
   ui_helper: null
   url_launcher: null
-  webview_flutter: 
+  webview_flutter: null
 
 dev_dependencies:
-  #flutter pub run build_runner build
   build_runner: null
   flutter_launcher_icons: null
 
