@@ -2,7 +2,7 @@
     package="com.example.remote_project">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="hkorn_new_dev_vijay"
+        android:label="HKORN"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

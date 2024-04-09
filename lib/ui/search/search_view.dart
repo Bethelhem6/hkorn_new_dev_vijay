@@ -16,136 +16,130 @@ class SearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SearchViewModel>.reactive(
-        viewModelBuilder: () => SearchViewModel(),
-        builder: (context, model, child) => Scaffold(
-              backgroundColor: BaseColors.white,
-              appBar: BaseAppbar(
-                context: context,
-                automaticallyImplyLeading: false,
-                title: "Search",
+      viewModelBuilder: () => SearchViewModel(),
+      builder: (context, model, child) => Scaffold(
+        backgroundColor: BaseColors.white,
+        appBar: BaseAppbar(
+          context: context,
+          automaticallyImplyLeading: false,
+          title: "Search",
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: sidePadding, right: sidePadding, top: 20),
+              child: TextField(
+                controller: model.searchController,
+                decoration: InputDecoration(
+                  suffixIcon: GestureDetector(
+                    onTap: model.search,
+                    child: const Icon(Icons.search),
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFE5E7EB).withOpacity(0.2),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    // width: 0.0 produces a thin "hairline" border
+                    borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                  ),
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  hintText: 'Search ',
+                ),
+                // onEditingComplete: model.search,
               ),
-              body: SingleChildScrollView(
-                child: Column(
+            ),
+            Padding(
+                padding: const EdgeInsets.only(
+                    left: sidePadding, right: sidePadding, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: sidePadding, right: sidePadding, top: 20),
-                      child: TextField(
-                        controller: model.searchController,
-                        decoration: InputDecoration(
-                          suffixIcon: GestureDetector(
-                            onTap: model.search,
-                            child: const Icon(Icons.search),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFFE5E7EB).withOpacity(0.2),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            // width: 0.0 produces a thin "hairline" border
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 0.0),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          hintText: 'Search ',
+                    Text("Recent Search",
+                        textAlign: TextAlign.center,
+                        style: BaseFonts.headline(fontSize: 14)),
+                    GestureDetector(
+                      onTap: () {
+                        model.clearRecentSearch();
+                      },
+                      child: Text("Clear All",
+                          textAlign: TextAlign.center,
+                          style: BaseFonts.headline(
+                              color: BaseColors.primaryColor, fontSize: 12)),
+                    ),
+                  ],
+                )),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: sidePadding, right: sidePadding, top: 10),
+              child: recentSearch(model, context),
+            ),
+            verticalSpaceMedium,
+            model.isBusy
+                ? Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height / 8),
+                    child: loadingSpinnerWidget,
+                  )
+                : model.result == null
+                    ? Container()
+                    // : model.result!.isEmpty
+                    //     ? Padding(
+                    //         padding: EdgeInsets.only(
+                    //             top:
+                    //                 MediaQuery.of(context).size.height /
+                    //                     4),
+                    //         child: Text("No record found.",
+                    //             style:
+                    //                 BaseFonts.headline(fontSize: 14)),
+                    //       )
+                    : Expanded(
+                        child: ListView.builder(
+                          // shrinkWrap: true,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: sidePadding, vertical: 10),
+                          itemCount: model.result!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                print('===>${model.result![index].post_title}');
+                                // Get the route for the current item
+                                String? route = _getRouteForItem(
+                                    model.result![index].post_title);
+                                // Navigate to the determined route
+                                if (route != null) {
+                                  Navigator.pushNamed(context, route);
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PostRedirectScreen(
+                                                result: model.result![index],
+                                              )));
+                                }
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    model.result![index].post_title,
+                                    style: BaseFonts.subHead(),
+                                  ),
+                                  const Divider(),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            left: sidePadding, right: sidePadding, top: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Recent Search",
-                                textAlign: TextAlign.center,
-                                style: BaseFonts.headline(fontSize: 14)),
-                            GestureDetector(
-                              onTap: () {
-                                model.clearRecentSearch();
-                              },
-                              child: Text("Clear All",
-                                  textAlign: TextAlign.center,
-                                  style: BaseFonts.headline(
-                                      color: BaseColors.primaryColor,
-                                      fontSize: 12)),
-                            ),
-                          ],
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: sidePadding, right: sidePadding, top: 10),
-                      child: recentSearch(model, context),
-                    ),
-                    verticalSpaceMedium,
-                    model.isBusy
-                        ? Padding(
-                            padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height / 4),
-                            child: loadingSpinnerWidget,
-                          )
-                        : model.result == null
-                            ? Container()
-                            // : model.result!.isEmpty
-                            //     ? Padding(
-                            //         padding: EdgeInsets.only(
-                            //             top:
-                            //                 MediaQuery.of(context).size.height /
-                            //                     4),
-                            //         child: Text("No record found.",
-                            //             style:
-                            //                 BaseFonts.headline(fontSize: 14)),
-                            //       )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: sidePadding, vertical: 10),
-                                itemCount: model.result!.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      print(
-                                          '===>${model.result![index].post_title}');
-                                      // Get the route for the current item
-                                      String? route = _getRouteForItem(
-                                          model.result![index].post_title);
-                                      // Navigate to the determined route
-                                      if (route != null) {
-                                        Navigator.pushNamed(context, route);
-                                      } else {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PostRedirectScreen(
-                                                      result:
-                                                          model.result![index],
-                                                    )));
-                                      }
-                                    },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          model.result![index].post_title,
-                                          style: BaseFonts.subHead(),
-                                        ),
-                                        const Divider(),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                  ],
-                ),
-              ),
-            ));
+          ],
+        ),
+      ),
+    );
   }
 
   Widget recentSearch(SearchViewModel model, BuildContext context) {
@@ -189,8 +183,8 @@ String? _getRouteForItem(String postTitle) {
       return Routes.forgetPasswordView;
     case 'UserPassword':
       return Routes.forgetPasswordView;
-    case 'Password Reset':
-      return Routes.forgetPasswordView;
+    // case 'Password Reset':
+    //   return Routes.forgetPasswordView;
     case 'Events':
       return Routes.eventView;
     case 'Event Detail View':

@@ -29,7 +29,7 @@ class SearchViewModel extends BaseViewModel {
   }
 
   void search() async {
-    if (searchController.text.isEmpty) {
+    if (searchController.text.isEmpty || searchController.text.length < 3) {
       return;
     }
 

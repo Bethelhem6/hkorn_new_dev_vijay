@@ -37,22 +37,28 @@ class AuthRepo<T> {
       String keyWord = '',
       required Map<String, dynamic> data}) async {
     FormData formData = FormData.fromMap(data);
+    try {
+      Response response = await _dio.post(baseUrl + url, data: formData);
 
-    Response response = await _dio.post(baseUrl + url, data: formData);
-
-    if (response.statusCode == 200) {
-      logger.d(response.data);
-      if (keyWord.isEmpty) {
-        return response.data;
-      } else if (response.data["search_data"] == "No record found.") {
+      if (response.statusCode == 200) {
+        logger.d(response.data);
+        if (keyWord.isEmpty) {
+          return response.data;
+        } else if (response.data["search_data"] == "No record found.") {
         response.data = [];
         return response.data;
+        } else {
+          return serializer != null
+              ? serializer(response.data[keyWord])
+              : response.data[keyWord];
+        }
       } else {
-        return serializer != null
-            ? serializer(response.data[keyWord])
-            : response.data[keyWord];
+        logger.e(response.data);
+
+        throw Exception('Failed to post ');
       }
-    } else {
+    } catch (e) {
+      logger.e(e.toString());
       throw Exception('Failed to post ');
     }
   }
