@@ -152,36 +152,36 @@ class HomeView extends StatelessWidget {
                   style: BaseFonts.headline(fontSize: 12)),
             ],
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: Stack(
-                children: [
-                  IconButton(
-                    onPressed: () => model.navigateToNotification(),
-                    icon: const Icon(CupertinoIcons.bell_fill, size: 35),
-                    color: BaseColors.black,
-                  ),
-                  model.popUpDataList.isNotEmpty
-                      ? Positioned(
-                          right: 10,
-                          top: 2,
-                          child: CircleAvatar(
-                            radius: 9,
-                            backgroundColor: BaseColors.redColor,
-                            child: Text(
-                              '${model.popUpDataList.length}',
-                              style: BaseFonts.headline2(
-                                      color: BaseColors.white, fontSize: 12)
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        )
-                      : const SizedBox()
-                ],
-              ),
-            )
-          ],
+          // actions: [
+          //   Padding(
+          //     padding: const EdgeInsets.only(right: 5.0),
+          //     child: Stack(
+          //       children: [
+          //         IconButton(
+          //           onPressed: () => model.navigateToNotification(),
+          //           icon: const Icon(CupertinoIcons.bell_fill, size: 35),
+          //           color: BaseColors.black,
+          //         ),
+          //         model.popUpDataList.isNotEmpty
+          //             ? Positioned(
+          //                 right: 10,
+          //                 top: 2,
+          //                 child: CircleAvatar(
+          //                   radius: 9,
+          //                   backgroundColor: BaseColors.redColor,
+          //                   child: Text(
+          //                     '${model.popUpDataList.length}',
+          //                     style: BaseFonts.headline2(
+          //                             color: BaseColors.white, fontSize: 12)
+          //                         .copyWith(fontWeight: FontWeight.w700),
+          //                   ),
+          //                 ),
+          //               )
+          //             : const SizedBox()
+          //       ],
+          //     ),
+          //   )
+          // ],
         ),
         body: SingleChildScrollView(
           child: Padding(

@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'package:flutter/material.dart';
 import 'package:hkorn_new_dev_vijay/const/images_const.dart';
 import 'package:hkorn_new_dev_vijay/ui/shared/base_colors.dart';

@@ -6,7 +6,6 @@ import 'package:hkorn_new_dev_vijay/ui/shared/base_colors.dart';
 import 'package:hkorn_new_dev_vijay/ui/shared/base_image.dart';
 import 'package:hkorn_new_dev_vijay/ui/shared/widgets/spinner.dart';
 import 'package:stacked/stacked.dart';
-import 'package:ui_helper/ui_helper.dart';
 
 import 'photo_detail_viewmodel.dart';
 

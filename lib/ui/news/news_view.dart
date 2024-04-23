@@ -5,7 +5,6 @@ import 'package:hkorn_new_dev_vijay/ui/shared/base_colors.dart';
 import 'package:hkorn_new_dev_vijay/ui/shared/base_fonts.dart';
 import 'package:hkorn_new_dev_vijay/ui/shared/widgets/memebership_widget.dart';
 import 'package:hkorn_new_dev_vijay/ui/shared/widgets/news_new.dart';
-import 'package:hkorn_new_dev_vijay/ui/shared/widgets/news_tile.dart';
 import 'package:hkorn_new_dev_vijay/ui/shared/widgets/spinner.dart';
 import 'package:stacked/stacked.dart';
 
