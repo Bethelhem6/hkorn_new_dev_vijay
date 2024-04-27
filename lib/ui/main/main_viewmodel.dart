@@ -14,8 +14,7 @@ import '../notification_page/notification_page_view.dart';
 class MainViewModel extends FutureViewModel {
   int currentIndex = 0;
   final _navService = locator<NavigationService>();
-    final _userService = locator<UserService>();
-
+  final _userService = locator<UserService>();
 
   List<PopupData> popUpDataList = [];
   void navigateToNotification() {
@@ -35,7 +34,12 @@ class MainViewModel extends FutureViewModel {
     currentIndex = index;
     notifyListeners();
   }
-  
+
+  void setIndex() async {
+    currentIndex = 0;
+    notifyListeners();
+  }
+
   @override
   void onData(data) {
     super.onData(data);

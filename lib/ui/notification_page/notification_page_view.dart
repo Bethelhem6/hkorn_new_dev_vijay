@@ -19,7 +19,7 @@ class NotificationView extends StatelessWidget {
         builder: (context, model, child) => Scaffold(
               backgroundColor: BaseColors.white,
               appBar: BaseAppbar(
-                title: 'Broadcast',
+                title: 'Notification',
                 context: context,
               ),
               body: model.isBusy
@@ -30,7 +30,7 @@ class NotificationView extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                           child: Center(
                             child: Text(
-                              "No broadcast messages",
+                              "No Notifications",
                               style: BaseFonts.footNote2(),
                             ),
                           ),

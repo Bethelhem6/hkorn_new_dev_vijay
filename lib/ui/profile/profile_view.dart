@@ -36,7 +36,9 @@ class ProfileView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               ExtendedImage.network(
-                                model.userModel?.user_image ?? '',
+                                !model.loaded
+                                    ? "Unable to load"
+                                    : model.userModel?.user_image ?? '',
                                 shape: BoxShape.circle,
                                 width: 70,
                                 height: 70,
@@ -48,12 +50,18 @@ class ProfileView extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    model.userModel!.display_name.toString(),
+                                    !model.loaded
+                                        ? "Unable to load"
+                                        : model.userModel!.display_name
+                                            .toString(),
                                     style: BaseFonts.subHeadBold(),
                                   ),
                                   verticalSpaceTiny,
                                   Text(
-                                    model.userModel!.user_email.toString(),
+                                    !model.loaded
+                                        ? "Unable to load"
+                                        : model.userModel!.user_email
+                                            .toString(),
                                     style: BaseFonts.subHead(
                                         fontSize: 12,
                                         color: BaseColors.greyColor),

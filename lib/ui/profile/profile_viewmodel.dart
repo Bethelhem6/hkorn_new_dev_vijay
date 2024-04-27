@@ -12,6 +12,7 @@ class ProfileViewModel extends FutureViewModel<UserModel?> {
   final _sharedService = locator<SharedPrefService>();
   final _authService = locator<AuthService>();
   UserModel? userModel;
+  bool loaded = false;
 
   logout() async {
     await _sharedService.clearStored();
@@ -23,6 +24,7 @@ class ProfileViewModel extends FutureViewModel<UserModel?> {
     super.onData(data);
     if (data != null) {
       userModel = data;
+      loaded = true;
       logger.d(userModel!.toMap());
       notifyListeners();
     }
