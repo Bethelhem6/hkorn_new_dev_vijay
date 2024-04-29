@@ -19,6 +19,7 @@ class NotificationView extends StatelessWidget {
         builder: (context, model, child) => Scaffold(
               backgroundColor: BaseColors.white,
               appBar: BaseAppbar(
+                automaticallyImplyLeading: false,
                 title: 'Notification',
                 context: context,
               ),
